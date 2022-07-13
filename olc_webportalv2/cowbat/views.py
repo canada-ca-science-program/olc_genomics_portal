@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from django.contrib import messages
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 # Standard libraries
 import logging
 import fnmatch
@@ -14,10 +14,10 @@ from olc_webportalv2.cowbat.forms import RunNameForm, RealTimeForm
 from olc_webportalv2.cowbat.tasks import run_cowbat_batch
 from olc_webportalv2.geneseekr.forms import EmailForm
 # Azure!
-from azure.storage.blob import BlockBlobService
-import azure.batch.batch_service_client as batch
-import azure.batch.batch_auth as batch_auth
-import azure.batch.models as batchmodels
+#from azure.storage.blob import BlockBlobService
+#import azure.batch.batch_service_client as batch
+#import azure.batch.batch_auth as batch_auth
+#import azure.batch.models as batchmodels
 # Task Management
 from kombu import Queue
 

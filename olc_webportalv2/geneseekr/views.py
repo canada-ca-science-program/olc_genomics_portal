@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.conf import settings
 from django.contrib import messages
 from django.views.decorators.csrf import csrf_exempt
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 # Standard libraries
 import datetime
 # Portal-specific things
@@ -15,7 +15,7 @@ from olc_webportalv2.geneseekr.models import GeneSeekrRequest, GeneSeekrDetail, 
 from olc_webportalv2.geneseekr.tasks import run_geneseekr, run_mash, run_amr_summary, run_prokka, \
     run_nearest_neighbors
 from olc_webportalv2.metadata.views import id_sync
-from azure.storage.blob import BlockBlobService
+#from azure.storage.blob import BlockBlobService
 import os
 
 

@@ -18,9 +18,9 @@ import smtplib
 import fnmatch
 import shutil
 import os
-from azure.storage.blob import BlockBlobService
-from azure.storage.blob import BlobPermissions
-import azure.batch.batch_service_client as batch
+#from azure.storage.blob import BlobServiceClient, AccountSasPermissions
+#from azure.mgmt.batch import BatchManagementClient
+#import azure.batch.batch_service_client as batch
 import azure.batch.batch_auth as batch_auth
 import azure.batch.models as batchmodels
 from strainchoosr import strainchoosr
@@ -28,7 +28,7 @@ import re
 import ete3
 import json
 # Celery Task Management
-from celery import shared_task, task
+from celery import shared_task
 # Sentry
 from sentry_sdk import capture_exception
 from azure.batch.models import BatchErrorException
@@ -37,7 +37,7 @@ from azure.batch.models import BatchErrorException
 @shared_task
 def run_cowbat_batch(sequencing_run_pk, vm_size='Standard_D32s_v3'):
     try:
-        blob_client = BlockBlobService(account_key=settings.AZURE_ACCOUNT_KEY,
+        blob_client = BlobServiceClient(account_key=settings.AZURE_ACCOUNT_KEY,
                                        account_name=settings.AZURE_ACCOUNT_NAME)
         sequencing_run = SequencingRun.objects.get(pk=sequencing_run_pk)
         # Check that all files are actually present. If not, some upload managed to fail.
@@ -127,7 +127,7 @@ def cowbat_cleanup(sequencing_run_pk):
     if not os.path.isdir(reports_and_assemblies_folder):
         os.makedirs(reports_and_assemblies_folder)
     container_name = sequencing_run.run_name.lower().replace('_', '-') + '-output'
-    blob_client = BlockBlobService(account_name=settings.AZURE_ACCOUNT_NAME,
+    blob_client = BlobServiceClient(account_name=settings.AZURE_ACCOUNT_NAME,
                                    account_key=settings.AZURE_ACCOUNT_KEY)
     # Download all reports and assemblies to reports and assemblies folder.
     assemblies_folder = 'olc_webportalv2/media/{run_name}/reports_and_assemblies/BestAssemblies'\
@@ -374,7 +374,7 @@ def check_tree_tasks():
             batch_client.pool.delete(pool_id=batch_job_name)
             if exit_codes_good:
                 # Now need to generate an SAS URL and give access to it/update the download link.
-                blob_client = BlockBlobService(account_key=settings.AZURE_ACCOUNT_KEY,
+                blob_client = BlobServiceClient(account_key=settings.AZURE_ACCOUNT_KEY,
                                                account_name=settings.AZURE_ACCOUNT_NAME)
                 # Download the output container so we can zip it.
                 download_container(blob_service=blob_client,
@@ -443,7 +443,7 @@ def check_amr_summary_tasks():
             batch_client.pool.delete(pool_id=batch_job_name)
             if exit_codes_good:
                 # Now need to generate an SAS URL and give access to it/update the download link.
-                blob_client = BlockBlobService(account_key=settings.AZURE_ACCOUNT_KEY,
+                blob_client = BlobServiceClient(account_key=settings.AZURE_ACCOUNT_KEY,
                                                account_name=settings.AZURE_ACCOUNT_NAME)
                 # Download the output container so we can zip it.
                 download_container(blob_service=blob_client,
@@ -521,7 +521,7 @@ def check_vir_typer_tasks():
             batch_client.pool.delete(pool_id=batch_job_name)
             if exit_codes_good:
                 # Now need to generate an SAS URL and give access to it/update the download link.
-                blob_client = BlockBlobService(account_key=settings.AZURE_ACCOUNT_KEY,
+                blob_client = BlobServiceClient(account_key=settings.AZURE_ACCOUNT_KEY,
                                                account_name=settings.AZURE_ACCOUNT_NAME)
                 vir_typer_result_container = batch_job_name + '-output'
                 #
@@ -585,7 +585,7 @@ def check_prokka_tasks():
             batch_client.pool.delete(pool_id=batch_job_name)
             if exit_codes_good:
                 # Now need to generate an SAS URL and give access to it/update the download link.
-                blob_client = BlockBlobService(account_key=settings.AZURE_ACCOUNT_KEY,
+                blob_client = BlobServiceClient(account_key=settings.AZURE_ACCOUNT_KEY,
                                                account_name=settings.AZURE_ACCOUNT_NAME)
                 # Download the output container so we can zip it.
                 download_container(blob_service=blob_client,
@@ -648,7 +648,7 @@ def monitor_tasks():
 def generate_download_link(blob_client, container_name, output_zipfile, expiry=8):
     """
     Make a download link for a file that will be put into Azure blob storage, good for up to expiry days
-    :param blob_client: Instance of azure.storage.blob.BlockBlobService
+    :param blob_client: Instance of azure.storage.blob.BlobServiceClient
     :param container_name: Name of container you want to create.
     :param output_zipfile: Zipfile you want to upload and create a link for.
     :param expiry: Number of days link should be valid for.
@@ -660,7 +660,7 @@ def generate_download_link(blob_client, container_name, output_zipfile, expiry=8
                                       blob_name=blob_name,
                                       file_path=output_zipfile)
     sas_token = blob_client.generate_container_shared_access_signature(container_name=container_name,
-                                                                       permission=BlobPermissions.READ,
+                                                                       permission=AccountSasPermissions.READ,
                                                                        expiry=datetime.datetime.utcnow() + datetime
                                                                        .timedelta(days=expiry))
     sas_url = blob_client.make_blob_url(container_name=container_name,
@@ -691,7 +691,7 @@ def download_container(blob_service, container_name, output_dir):
 
 @shared_task
 def clean_old_containers():
-    blob_client = BlockBlobService(account_name=settings.AZURE_ACCOUNT_NAME,
+    blob_client = BlobServiceClient(account_name=settings.AZURE_ACCOUNT_NAME,
                                    account_key=settings.AZURE_ACCOUNT_KEY)
     # Patterns we have to worry about - data-request-digits, geneseekr-digits
     # TODO: Add more of these as more analysis types get created.

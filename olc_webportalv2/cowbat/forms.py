@@ -4,7 +4,7 @@ import re
 from olc_webportalv2.cowbat.models import SequencingRun
 from django.forms.widgets import EmailInput
 
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy  as _
 
 class RunNameForm(forms.Form):
     run_name = forms.CharField(max_length=64, widget=forms.TextInput(attrs={'placeholder': _('YYMMDD_LAB')}), label=_('Run Name') )

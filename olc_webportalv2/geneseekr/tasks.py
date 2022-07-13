@@ -13,8 +13,8 @@ from olc_webportalv2.metadata.models import SequenceData
 from olc_webportalv2.cowbat.tasks import generate_download_link
 from sentry_sdk import capture_exception
 
-from azure.storage.blob import BlockBlobService
-from azure.storage.blob import BlobPermissions
+#from azure.storage.blob import BlockBlobService
+#from azure.storage.blob import BlobPermissions
 
 import csv
 from django.shortcuts import get_object_or_404

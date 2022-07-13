@@ -7,7 +7,7 @@ https://docs.djangoproject.com/en/dev/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/dev/ref/settings/
 """
-from django.utils.translation import ugettext_lazy as language
+from django.utils.translation import gettext_lazy as language
 from sentry_sdk.integrations.django import DjangoIntegration
 from django.core.exceptions import ImproperlyConfigured
 from celery.schedules import crontab
@@ -56,7 +56,8 @@ DJANGO_APPS = [
     'django.contrib.postgres',
 
     # Django-autocomplete-light, for form auto completion. It's docs say it should go before django.contrib.admin
-    'dal',
+    #'django_dal',
+    #'dal',
     'dal_select2',
 
     # Admin
@@ -385,9 +386,9 @@ ADMIN_URL = r'^admin/'
 # Your common stuff: Below this line define 3rd party library settings
 # ------------------------------------------------------------------------------
 if ENVIRONMENT == 'DEV':
-    ALLOWED_HOSTS = ['0.0.0.0', '192.168.1.22', '192.168.1.20', "192.168.1.8", '192.168.1.12']
+    ALLOWED_HOSTS = ['localhost','0.0.0.0', '192.168.1.22', '192.168.1.20', "192.168.1.8", '192.168.1.12']
 else:
-    ALLOWED_HOSTS = ['0.0.0.0', 'olc.lnpr.info', '40.85.255.27', 'olc.cloud.inspection.gc.ca']
+    ALLOWED_HOSTS = ['localhost','0.0.0.0', 'olc.lnpr.info', '40.85.255.27', 'olc.cloud.inspection.gc.ca']
 MAX_ATTEMPTS = 1
 
 LOGGING = {
