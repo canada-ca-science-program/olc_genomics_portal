@@ -1,9 +1,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from django.views.decorators.csrf import csrf_exempt
 from django.forms.formsets import formset_factory
-from azure.storage.blob import BlockBlobService
+#from azure.storage.blob import BlockBlobService
 from django.db import IntegrityError
 from django.contrib import messages
 from weasyprint import HTML, CSS

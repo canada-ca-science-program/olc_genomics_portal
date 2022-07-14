@@ -1,5 +1,5 @@
 from rest_framework import permissions, views, parsers, response, generics
-from azure.storage.blob import BlockBlobService, BlobPermissions
+#from azure.storage.blob import BlockBlobService, BlobPermissions
 from olc_webportalv2.cowbat.models import SequencingRun, DataFile
 from olc_webportalv2.cowbat.tasks import run_cowbat_batch
 from django.conf import settings

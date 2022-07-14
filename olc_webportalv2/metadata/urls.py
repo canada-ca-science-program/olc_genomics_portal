@@ -1,5 +1,7 @@
 from olc_webportalv2.metadata import views
-from django.conf.urls import url, include
+from django.urls import re_path as url 
+from django.urls import include
+
 from django.urls import path
 from rest_framework.urlpatterns import format_suffix_patterns
 from rest_framework.schemas import get_schema_view

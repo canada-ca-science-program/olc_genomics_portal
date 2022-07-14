@@ -1,5 +1,6 @@
 from olc_webportalv2.geneseekr import views
-from django.conf.urls import url, include
+from django.urls import re_path as url 
+from django.urls import include
 from django.utils.translation import gettext_lazy as _
 
 urlpatterns = [

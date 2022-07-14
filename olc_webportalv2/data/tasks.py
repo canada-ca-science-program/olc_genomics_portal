@@ -8,10 +8,10 @@ import os
 # Portal-specific things
 from olc_webportalv2.data.models import DataRequest
 # Azure!
-from azure.storage.blob import BlockBlobService
-from azure.storage.blob import BlobPermissions
+#from azure.storage.blob import BlockBlobService
+#from azure.storage.blob import BlobPermissions
 # Celery Task Management
-from celery import shared_task, task
+from celery import shared_task
 # Sentry, send me error reports
 from sentry_sdk import capture_exception
 
