@@ -1,9 +1,9 @@
-from azure.common.credentials import ServicePrincipalCredentials
-from azure.storage.blob import BlockBlobService
-import azure.batch.batch_auth as batch_auth
-import azure.batch.batch_service_client as batch
-from azure.storage.blob import BlobPermissions
-import azure.batch.models as batchmodels
+#from azure.common.credentials import ServicePrincipalCredentials
+#from azure.storage.blob import BlockBlobService
+#import azure.batch.batch_auth as batch_auth
+#import azure.batch.batch_service_client as batch
+#from azure.storage.blob import BlobPermissions
+#import azure.batch.models as batchmodels
 from time import time
 import datetime
 import fnmatch
